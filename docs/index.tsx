@@ -1,7 +1,4 @@
-import React from 'react';
-
-const Docs = () => {
-  return <div>Docs</div>;
+const Home = () => {
+  return <div>hello domi</div>;
 };
-
-export default Docs;
+export default Home;
