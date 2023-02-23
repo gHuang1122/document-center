@@ -2,28 +2,33 @@ import { useNavData } from "@/hooks/useNavData";
 import { history, Outlet } from "umi";
 import styles from "./index.less";
 import "../global.less";
+import { RouteType } from "@/types/routes";
+import NavList from "./NavList";
 
 export default function Layout() {
   const nav = useNavData();
   const handleClick = (link: string) => {
-    history.push(link);
+    if (link) {
+      history.push(link);
+    }
   };
 
   return (
     <section className={styles.main}>
       <aside className={styles.aside}>
-        <ul>
-          {nav.map((item: any) => (
+        {/* <ul>
+          {nav.map((item: RouteType) => (
             <li
               key={item.link}
               onClick={() => {
-                handleClick(item.link);
+                handleClick(item.link!);
               }}
             >
               {item.title}
             </li>
           ))}
-        </ul>
+        </ul> */}
+        <NavList navData={nav} />
       </aside>
       <section className={`${styles.content} markdown-body`}>
         <Outlet />
