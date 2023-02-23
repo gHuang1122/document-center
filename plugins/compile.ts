@@ -1,5 +1,4 @@
 import type { IApi } from "umi";
-import MdLoader from "./loaders/markdown/index";
 
 export default (api: IApi) => {
   api.describe({ key: "domi:compile" });
@@ -22,10 +21,7 @@ export default (api: IApi) => {
       // 给这个loader取个名字
       .use("md-loader")
       // loader的路径
-      .loader(loaderPath)
-      .options({
-        handler: MdLoader,
-      });
+      .loader(loaderPath);
 
     return memo;
   });
