@@ -20,7 +20,6 @@ export const generateUtil = (
   const map = new Map();
   oRoutes.forEach((item) => {
     const titles = item.title.split("/");
-    debugger;
     const key: string = `${prev}/${titles[0]}`;
     if (!map.has(key)) {
       const childrenTitlesArr: RouteType[] = [];
@@ -30,7 +29,6 @@ export const generateUtil = (
         if (/^\//.test(key)) {
           step = "/";
         }
-        debugger;
         if (rex.test(step + el.title)) {
           const len = key.match(/\//g)?.length;
           const cTitiles = el.title.split("/").splice(len!).join("/");
