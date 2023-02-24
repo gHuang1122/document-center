@@ -10,7 +10,14 @@ rendererMD.link = (...args) => {
 
 // 图片
 rendererMD.image = (...args) => {
-  return `<img src="" onerror="$loadImgSrc(this)" alt="${args[2]}" />`;
+  const rex = /^\./g;
+  if (rex.test(args[0])) {
+    // 本地图片
+    return `<img src="" onerror="$loadImgSrc(this)" alt="${args[2]}" />`;
+  } else {
+    // 网络图片
+    return `<img src="${args[0]}" alt="${args[2]}" />`;
+  }
 };
 
 marked.setOptions({
