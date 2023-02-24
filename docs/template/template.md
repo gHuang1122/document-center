@@ -58,6 +58,12 @@ function func(){
 
 ![testimage](./img/testimage.png)
 
+```
+- 文件如上图存放
+- 语法：![图片名称][图片相对路径]
+- 暂不支持加载http图片
+```
+
 ## 表格
 
 | 表头   | 表头   |
