@@ -1,16 +1,28 @@
 /**
  * @auth Breezy
  * @create_time 2023-2-23
- * @desc 路由生成帮助函数
  */
 
+import { ImageType } from "@/types/imageType";
 import { RouteType } from "@/types/routes";
 
+/**
+ * @desc 路由生成函数
+ * @param oRoutes
+ * @returns
+ */
 export const generageRoutes = (oRoutes: RouteType[]) => {
   const routes = generateUtil(oRoutes, oRoutes);
   return routes;
 };
 
+/**
+ * @desc 路由生成辅助函数
+ * @param oRoutes
+ * @param originData
+ * @param prev
+ * @returns
+ */
 export const generateUtil = (
   oRoutes: RouteType[],
   originData: RouteType[],
@@ -59,6 +71,28 @@ export const generateUtil = (
 };
 
 /**
- * 根据 title 匹配路由
+ * 根据 path 匹配路由 imgeFiles
  */
-export const getRoutesByTitle = () => {};
+export const getImgFilesBypath = (path: string, oRoutes: RouteType[]) => {
+  let imageFiles: ImageType[] = [];
+  routeRecu(oRoutes, (item) => {
+    if (path == "/" + item.path && item.extra?.imageFiles) {
+      imageFiles = item.extra.imageFiles;
+    }
+  });
+  return imageFiles;
+};
+
+/**
+ * 路由递归函数
+ */
+type callBackType = (route: RouteType) => void;
+export const routeRecu = (oRoutes: RouteType[], callBack: callBackType) => {
+  oRoutes.forEach((item) => {
+    if (item.children?.length) {
+      routeRecu(item.children, callBack);
+    } else {
+      callBack(item);
+    }
+  });
+};

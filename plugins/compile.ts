@@ -1,7 +1,7 @@
 import type { IApi } from "umi";
 
 export default (api: IApi) => {
-  api.describe({ key: "domi:compile" });
+  api.describe({ key: "doc:compile" });
 
   api.chainWebpack(async (memo) => {
     const babelInUmi = memo.module.rule("src").use("babel-loader").entries();

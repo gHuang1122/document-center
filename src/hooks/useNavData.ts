@@ -1,5 +1,5 @@
 import { RouteType } from "@/types/routes";
-import { generageRoutes } from "@/utils/routes";
+import { generageRoutes, getImgFilesBypath } from "@/utils/routes";
 import { useAppData } from "umi";
 
 /**
@@ -19,6 +19,7 @@ export const useNavData = () => {
 
   Object.values(localeDocRoutes).forEach((route: RouteType) => {
     nav.push({
+      ...route,
       title: route.id!,
       link: "/" + route.path,
     });
@@ -26,6 +27,21 @@ export const useNavData = () => {
 
   // 生成嵌套路由
   const newNavRoutes = generageRoutes(nav);
-  
+
+  // 将路由数据注入window中
+  const wd: any = window;
+  // wd.$routes = newNavRoutes;
+  wd.$loadImgSrc = (img: HTMLImageElement) => {
+    const alt = img.alt;
+    const pathName = location.pathname;
+    const imageFiles = getImgFilesBypath(pathName, newNavRoutes);
+    imageFiles.forEach((item) => {
+      if ((item.imageName = alt)) {
+        img.src = item.imageBase64;
+      }
+    });
+    // console.log(imageFiles);
+    console.log(`加载图片${alt}`);
+  };
   return newNavRoutes;
 };

@@ -1,0 +1,29 @@
+.asideCon {
+  margin-left: 10px;
+  .item {
+    display: flex;
+    align-items: center;
+    // width: 120px;
+    overflow: hidden;
+    line-height: 30px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    .step {
+      margin-right: 6px;
+    }
+  }
+  .active {
+    color: blue;
+    cursor: pointer;
+  }
+  .isLink {
+    cursor: pointer;
+    &:hover {
+      color: blue;
+    }
+    .step {
+      font-weight: 800;
+      font-size: 18px;
+    }
+  }
+}
