@@ -19,11 +19,11 @@ export const useNavData = () => {
   const nav: RouteType[] = []
 
   Object.values(localeDocRoutes).forEach((route: RouteType) => {
-    const { show, order, title } = getConfig(route.id!)
+    const { show, order } = getConfig(route.id!)
     if (show) {
       nav.push({
         ...route,
-        title: title,
+        title: route.id!,
         link: '/' + route.path,
         order,
       })

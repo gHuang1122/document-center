@@ -13,8 +13,9 @@ import { getConfig } from './config'
  * @returns
  */
 export const generageRoutes = (oRoutes: RouteType[]) => {
-  const sortRoutes = oRoutes.sort((a, b) => b.order! - a.order!)
-  const routes = generateUtil(sortRoutes, sortRoutes)
+  const routes = generateUtil(oRoutes, oRoutes)
+  // console.log(routes);
+
   return routes
 }
 
@@ -37,16 +38,18 @@ export const generateUtil = (
       title: item.title,
     }
     const titles = item.title.split('/')
-    const key: string = `${prev}/${titles[0]}`
+    const title0 = titles[0].replace(/\[\d_\d*]/g, '')
+    const key: string = `${prev}/${title0}`
     if (!map.has(key)) {
       const childrenTitlesArr: RouteType[] = []
       originData.forEach((el) => {
+        const elTitle = el.title.replace(/\[\d_\d*]/g, '')
         let rex = new RegExp(`^${key}`)
         let step = ''
         if (/^\//.test(key)) {
           step = '/'
         }
-        if (rex.test(step + el.title)) {
+        if (rex.test(step + elTitle)) {
           const len = key.match(/\//g)?.length
           const cTitiles = el.title.split('/').splice(len!).join('/')
           if (cTitiles) {
@@ -60,6 +63,7 @@ export const generateUtil = (
       if (titles.length == 1) {
         routeObj = {
           ...item,
+          // title: title0,
           title: titles[0],
         }
       } else {
@@ -79,19 +83,19 @@ export const generateUtil = (
         }
       }
       const { title } = routeObj
-      const { order, show } = getConfig(title)
+      const { order, show, title: newTitle } = getConfig(title)
 
       if (show) {
         routes.push({
           ...routeObj,
           order,
+          title: newTitle,
         })
       }
       map.set(key, key)
     }
   })
-
-  return routes.sort((a, b) => a.order! - b.order!)
+  return routes.sort((a, b) => b.order! - a.order!)
 }
 
 /**
