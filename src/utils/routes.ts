@@ -14,8 +14,6 @@ import { getConfig } from './config'
  */
 export const generageRoutes = (oRoutes: RouteType[]) => {
   const routes = generateUtil(oRoutes, oRoutes)
-  // console.log(routes);
-
   return routes
 }
 
@@ -69,13 +67,14 @@ export const generateUtil = (
       } else {
         let indexRoute = {}
         const children = generateUtil(childrenTitlesArr, oRoutes, key).filter(
-          (item) => {
-            if (item.title == 'index') {
-              indexRoute = { ...item }
+          (c) => {
+            if (c.title == 'index') {
+              indexRoute = { ...c }
             }
-            return item.title != 'index'
+            return c.title != 'index'
           }
         )
+
         routeObj = {
           ...indexRoute,
           title: titles[0],

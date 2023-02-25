@@ -20,14 +20,16 @@ export const useNavData = () => {
 
   Object.values(localeDocRoutes).forEach((route: RouteType) => {
     const { show, order } = getConfig(route.id!)
+    const bool = route.path == "/" || /^\\/g.test(route.path!)
+    const step = bool ? '' : '/'
     if (show) {
       nav.push({
         ...route,
         title: route.id!,
         link:
           route.parentId == '@@/global-layout'
-            ? '/docs/' + route.path
-            : '/' + route.path,
+            ? `/docs${step}${route.path}`
+            : `${step}${route.path}`,
         order,
       })
     }
