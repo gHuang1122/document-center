@@ -21,7 +21,10 @@ const AsideList = (props: Props) => {
     // 不展示的路由
     const hiddenLinks = ['/']
     // return navData?.filter((item) => item.parentId == '@@/global-layout') ?? []
-    return navData?.filter((item) => !hiddenLinks.includes(item.link ?? "")) ?? []
+
+    return (
+      navData?.filter((item) => !hiddenLinks.includes(item.link ?? '')) ?? []
+    )
   }, [navData])
 
   if (!navData) {

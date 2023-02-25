@@ -3,17 +3,23 @@ const hljs = require("highlight.js");
 
 const rendererMD = new marked.Renderer();
 
-// 超链接 [接口授权1](./接口授权1.md) => [arr[2]](arr[0])
+// 超链接 [接口授权1](./接口授权1.md) => [args[2]](args[0])
 rendererMD.link = (...args) => {
-  return `<a href='${args[0]}' target="_blank">${args[2]}</a>`;
+  // 判断是否为 相对路径的md文件
+  const mdRex = /\..*\.md/g;
+  if (mdRex.test(args[0])) {
+    return `<a onclick="$goMdFile(this)" data-mdpath="${args[0]}">${args[2]}</a>`;
+  } else {
+    return `<a href='${args[0]}' target="_blank">${args[2]}</a>`;
+  }
 };
 
-// 图片  ![testimage[width:"300px";height:"300px"]](./img/testimage.png) => ![arr[2]](arr[0])
+// 图片  ![testimage[width:300px;height:300px]](./img/testimage.png) => ![args[2]](args[0])
 rendererMD.image = (...args) => {
   const rex = /^\./g;
   let style = "";
   try {
-    style = args[2].match(/\[.*\]/g)[0].replace(/\]|\[/g,"");
+    style = args[2].match(/\[.*\]/g)[0].replace(/\]|\[/g, "");
   } catch (error) {
 
   }

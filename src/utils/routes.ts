@@ -36,12 +36,12 @@ export const generateUtil = (
       title: item.title,
     }
     const titles = item.title.split('/')
-    const title0 = titles[0].replace(/\[\d_\d*]/g, '')
+    const title0 = titles[0].replace(/\[\d|_\d*\]/g, '')
     const key: string = `${prev}/${title0}`
     if (!map.has(key)) {
       const childrenTitlesArr: RouteType[] = []
       originData.forEach((el) => {
-        const elTitle = el.title.replace(/\[\d_\d*]/g, '')
+        const elTitle = el.title.replace(/\[\d|_\d*\]/g, '')
         let rex = new RegExp(`^${key}`)
         let step = ''
         if (/^\//.test(key)) {
@@ -102,8 +102,8 @@ export const generateUtil = (
  */
 export const getImgFilesBypath = (path: string, oRoutes: RouteType[]) => {
   let imageFiles: ImageType[] = []
-  routeRecu(oRoutes, (item) => {
-    if (path == '/' + item.path && item.extra?.imageFiles) {
+  routeRecutil(oRoutes, (item) => {
+    if (path == item.path && item.extra?.imageFiles) {
       imageFiles = item.extra.imageFiles
     }
   })
@@ -114,12 +114,11 @@ export const getImgFilesBypath = (path: string, oRoutes: RouteType[]) => {
  * 路由递归函数
  */
 type callBackType = (route: RouteType) => void
-export const routeRecu = (oRoutes: RouteType[], callBack: callBackType) => {
+export const routeRecutil = (oRoutes: RouteType[], callBack: callBackType) => {
   oRoutes.forEach((item) => {
+    callBack(item)
     if (item.children?.length) {
-      routeRecu(item.children, callBack)
-    } else {
-      callBack(item)
+      routeRecutil(item.children, callBack)
     }
   })
 }

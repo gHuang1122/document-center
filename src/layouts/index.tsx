@@ -6,7 +6,8 @@ import AsideList from './AsideList'
 
 export default function Layout() {
   const nav = useNavData()
-
+  console.log(nav);
+  
   return (
     <section className={styles.main}>
       <aside className={styles.aside}>
