@@ -1,43 +1,49 @@
-import { RouteType } from "@/types/routes";
-import { history, useLocation } from "umi";
-import styles from "./index.less";
+import { RouteType } from '@/types/routes'
+import { useMemo } from 'react'
+import { history, useLocation } from 'umi'
+import styles from './index.less'
 
 type Props = {
-  navData?: RouteType[];
-};
+  navData?: RouteType[]
+}
 
 const AsideList = (props: Props) => {
-  const { navData } = props;
-  const location = useLocation();
+  const { navData } = props
+  const location = useLocation()
 
   const handleClick = (link?: string) => {
     if (link) {
-      history.push(link);
+      history.push(link)
     }
-  };
+  }
+
+  const filterNavData = useMemo(() => {
+    return navData?.filter((item) => item.parentId == '@@/global-layout') ?? []
+  }, [navData])
+
   if (!navData) {
-    return null;
+    return null
   }
   return (
     <div className={styles.asideCon}>
-      {navData!.map((item) => (
+      {filterNavData.map((item) => (
         <div key={item.title}>
           <div
-            className={`${styles.item} ${item.link ? styles.isLink : ""} ${
-              item.link == location.pathname ? styles.active : ""
+            className={`${styles.item} ${item.link ? styles.isLink : ''} ${
+              item.link == location.pathname ? styles.active : ''
             }`}
             onClick={() => {
-              handleClick(item.link);
+              handleClick(item.link)
             }}
           >
-            <span className={styles.step}>{item.link ? "·" : "-"}</span>
+            <span className={styles.step}>{item.link ? '·' : '-'}</span>
             <span>{item.title}</span>
           </div>
           <AsideList navData={item.children} />
         </div>
       ))}
     </div>
-  );
-};
+  )
+}
 
-export default AsideList;
+export default AsideList

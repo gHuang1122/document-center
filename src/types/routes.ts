@@ -1,6 +1,7 @@
 import { ImageType } from './imageType'
 
 export type RouteType = {
+  parentId?: string
   title: string
   link?: string
   order?: number

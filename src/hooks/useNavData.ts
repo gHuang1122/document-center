@@ -24,7 +24,10 @@ export const useNavData = () => {
       nav.push({
         ...route,
         title: route.id!,
-        link: '/' + route.path,
+        link:
+          route.parentId == '@@/global-layout'
+            ? '/docs/' + route.path
+            : '/' + route.path,
         order,
       })
     }
@@ -32,7 +35,6 @@ export const useNavData = () => {
 
   // 生成嵌套路由
   const newNavRoutes = generageRoutes(nav)
-  // console.log(newNavRoutes);
 
   // 将数据注入window中
   const wd: any = window

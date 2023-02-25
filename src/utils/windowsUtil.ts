@@ -1,6 +1,6 @@
-import { getImgFilesBypath } from "./routes"
+import { getImgFilesBypath } from './routes'
 
-const wd: any = window
+export const wd: any = window
 
 // 图片加载
 wd.$loadImgSrc = (img: HTMLImageElement) => {
