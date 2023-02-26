@@ -10,6 +10,7 @@ export type RouteType = {
   id?: string
   path?: string
   show?: number
+  oldTitle?: string
   extra?: {
     imageFiles: ImageType[]
   }

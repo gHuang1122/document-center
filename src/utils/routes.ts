@@ -49,7 +49,9 @@ export const generateUtil = (
         }
         if (rex.test(step + elTitle)) {
           const len = key.match(/\//g)?.length
+
           const cTitiles = el.title.split('/').splice(len!).join('/')
+
           if (cTitiles) {
             childrenTitlesArr.push({
               ...el,
@@ -68,10 +70,10 @@ export const generateUtil = (
         let indexRoute = {}
         const children = generateUtil(childrenTitlesArr, oRoutes, key).filter(
           (c) => {
-            if (c.title == 'index') {
+            if (c.title.includes('index')) {
               indexRoute = { ...c }
             }
-            return c.title != 'index'
+            return !c.title.includes('index')
           }
         )
 
@@ -89,6 +91,7 @@ export const generateUtil = (
           ...routeObj,
           order,
           title: newTitle,
+          oldTitle: title,
         })
       }
       map.set(key, key)
@@ -121,4 +124,28 @@ export const routeRecutil = (oRoutes: RouteType[], callBack: callBackType) => {
       routeRecutil(item.children, callBack)
     }
   })
+}
+
+/**
+ *  寻找父级路由
+ *  @param cPath 当前路由path
+ *  @param hie 级别
+ *  @param routes 路由数据
+ */
+export const findFaRoutes: any = (cPath: string, routes: RouteType[] = []) => {
+  const arr: RouteType[] = []
+  routes.forEach((item) => {
+    if (item.path == cPath) {
+      arr.push(item)
+    } else if (item.children?.length) {
+      const children = findFaRoutes(cPath, item.children)
+      if (children.length) {
+        arr.push({
+          ...item,
+          children,
+        })
+      }
+    }
+  })
+  return arr
 }

@@ -1,6 +1,8 @@
-import { getImgFilesBypath, routeRecutil } from './routes'
+import { findFaRoutes, getImgFilesBypath, routeRecutil } from './routes'
 import path from 'path'
 import { history } from 'umi'
+import { RouteType } from '@/types/routes'
+import { Md5 } from 'ts-md5'
 
 export const wd: any = window
 
@@ -24,18 +26,22 @@ wd.$loadImgSrc = (img: HTMLImageElement) => {
 // md文件跳转
 wd.$goMdFile = (a: HTMLElement) => {
   const mdPath = a.getAttribute('data-mdpath') ?? ''
-  const fileName = path.basename(mdPath).replace(/\.md/, '')
   const currentRouteurl = path.basename(location.pathname)
 
-  routeRecutil(wd.$routes, (item) => {
-    if (item.path == currentRouteurl) {
-      if (item.children?.length) {
-        routeRecutil(item.children, (e) => {
-          if (e.title == fileName) {
-            e.link && history.push(e.link)
-          }
-        })
-      }
+  const routes = findFaRoutes(currentRouteurl, wd.$routes)
+
+  const titles: string[] = []
+  routeRecutil(routes, (item) => {
+    if (item.oldTitle && item.children?.length == 1) {
+      titles.push(item.oldTitle)
     }
   })
+  if (titles.length == 0) {
+    titles.push(routes[0].oldTitle)
+  }
+  const originPath = path.join(titles.join('/'), mdPath).replace(/\.md/g, '')
+  const link = Md5.hashStr(originPath)
+  if (link) {
+    history.push(link)
+  }
 }
